@@ -46,6 +46,10 @@ describe('Images API', () => {
             const res = yield request.get('/api/images/wrongImgName?width=500&height=500');
             expect(res.statusCode).toBe(404);
         }));
+        it('should respond 400 for invalid width / height', () => __awaiter(void 0, void 0, void 0, function* () {
+            const res = yield request.get(`/api/images/${imgName}?width=abc&height=500`);
+            expect(res.statusCode).toBe(400);
+        }));
         it('should respond with resized image', () => __awaiter(void 0, void 0, void 0, function* () {
             const res = yield request.get(`/api/images/${imgName}?width=${imgSize[0]}&height=${imgSize[1]}`);
             expect(res.statusCode).toBe(200);
@@ -71,6 +75,10 @@ describe('Images API', () => {
         it('should respond 404 for wrong image', () => __awaiter(void 0, void 0, void 0, function* () {
             const res = yield request.get('/api/images/wrongImgName?width=500&height=500');
             expect(res.statusCode).toBe(404);
+        }));
+        it('should respond 400 for invalid width / height', () => __awaiter(void 0, void 0, void 0, function* () {
+            const res = yield request.get(`/api/images/${imgName}?width=abc&height=500`);
+            expect(res.statusCode).toBe(400);
         }));
         it('should use cached image (not create new one)', () => __awaiter(void 0, void 0, void 0, function* () {
             yield request.get(`/api/images/${imgName}?width=${imgSize[0]}&height=${imgSize[1]}`);

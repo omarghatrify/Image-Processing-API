@@ -40,6 +40,13 @@ describe('Images API', () => {
       expect(res.statusCode).toBe(404);
     });
 
+    it('should respond 400 for invalid width / height', async () => {
+      const res = await request.get(
+        `/api/images/${imgName}?width=abc&height=500`
+      );
+      expect(res.statusCode).toBe(400);
+    });
+
     it('should respond with resized image', async () => {
       const res = await request.get(
         `/api/images/${imgName}?width=${imgSize[0]}&height=${imgSize[1]}`
@@ -73,6 +80,13 @@ describe('Images API', () => {
         '/api/images/wrongImgName?width=500&height=500'
       );
       expect(res.statusCode).toBe(404);
+    });
+
+    it('should respond 400 for invalid width / height', async () => {
+      const res = await request.get(
+        `/api/images/${imgName}?width=abc&height=500`
+      );
+      expect(res.statusCode).toBe(400);
     });
 
     it('should use cached image (not create new one)', async () => {
