@@ -24,11 +24,17 @@ const ProcessImg = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     const imgPath = path_1.default.join(fullDir, imgName + '.jpg');
     try {
         yield fs_1.promises.access(imgPath, fs_1.constants.F_OK);
-        const w = parseInt(req.query.width);
-        const h = parseInt(req.query.height);
-        if (!w || !h) {
+        if (!req.query.width && !req.query.height) {
             res.locals.filePath = imgPath;
             return next();
+        }
+        const w = Number(req.query.width);
+        const h = Number(req.query.height);
+        if (isNaN(w) || isNaN(h) || w < 1 || h < 1) {
+            res
+                .status(400)
+                .send('Only positive numbers can be used for width/height.');
+            return;
         }
         const thumbPath = path_1.default.join(thumbDir, `${imgName}_${w}x${h}.jpg`);
         try {

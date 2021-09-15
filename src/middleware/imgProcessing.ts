@@ -17,11 +17,17 @@ const ProcessImg = async (
   const imgPath = path.join(fullDir, imgName + '.jpg');
   try {
     await fs.access(imgPath, constants.F_OK);
-    const w = parseInt(<string>req.query.width);
-    const h = parseInt(<string>req.query.height);
-    if (!w || !h) {
+    if (!req.query.width && !req.query.height) {
       res.locals.filePath = imgPath;
       return next();
+    }
+    const w = Number(req.query.width);
+    const h = Number(req.query.height);
+    if (isNaN(w) || isNaN(h) || w < 1 || h < 1) {
+      res
+        .status(400)
+        .send('Only positive numbers can be used for width/height.');
+      return;
     }
     const thumbPath = path.join(thumbDir, `${imgName}_${w}x${h}.jpg`);
     try {
