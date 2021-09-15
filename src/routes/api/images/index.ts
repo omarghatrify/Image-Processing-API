@@ -3,9 +3,14 @@ import ProcessImg from '../../../middleware/imgProcessing';
 
 const images = express.Router();
 
-images.get('/:imageName', ProcessImg, async (req, res) => {
-  if (res.locals.filePath) return res.sendFile(res.locals.filePath);
-  else return res.sendStatus(500);
-});
+images.get(
+  '/:imageName',
+  ProcessImg,
+  (req: express.Request, res: express.Response): void => {
+    if (res.locals.filePath) res.sendFile(res.locals.filePath);
+    else res.sendStatus(500);
+    return;
+  }
+);
 
 export default images;
